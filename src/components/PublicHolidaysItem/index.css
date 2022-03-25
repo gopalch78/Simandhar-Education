@@ -1,0 +1,16 @@
+.list-item-container {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  justify-content: space-around;
+}
+.check {
+  margin-bottom: 30px;
+}
+.item {
+  margin: 0px;
+  height: 50px;
+  width: 180px;
+}
