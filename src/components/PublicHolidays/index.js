@@ -29,13 +29,13 @@ class PublicHolidays extends Component {
       apiStatus: apiStatusConstants.inProgress,
     })
 
-    const holidaysUrl = `https://date.nager.at/api/v2/publicholidays/2020/US`
+    const holidaysUrl = `https://date.nager.at/api/v2/publicholidays/2020/US?`
     const options = {
       method: 'GET',
     }
     const response = await fetch(holidaysUrl, options)
     const data = await response.json()
-    console.log(data)
+
     const updatedData = data.map(eachHoliday => ({
       date: eachHoliday.date,
       fixed: JSON.stringify(eachHoliday.fixed),
@@ -60,8 +60,37 @@ class PublicHolidays extends Component {
     this.setState({searchInput: event.target.value})
   }
 
+  onChangeGlobal = event => {
+    const {holidaysData} = this.state
+    const {checked} = event.target
+    const updatedHolidays = holidaysData.filter(each => each.global === 'true')
+    if (checked) {
+      this.setState({holidaysData: updatedHolidays})
+    } else {
+      this.setState(holidaysData)
+    }
+  }
+
+  onChangeFixed = () => {
+    const {holidaysData} = this.state
+    const updatedHolidays = holidaysData.filter(each => each.fixed === 'true')
+    this.setState({holidaysData: updatedHolidays})
+  }
+
+  toggleIsChecked = global => {
+    this.setState(prevState => ({
+      holidaysData: prevState.holidaysData.map(each => {
+        if (global === each.global) {
+          return {...each, isChecked: !each.isChecked}
+        }
+        return each
+      }),
+    }))
+  }
+
   renderHolidays = () => {
     const {holidaysData, searchInput} = this.state
+
     const searchResultsByLocalName = holidaysData.filter(
       each =>
         each.localName.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -72,7 +101,11 @@ class PublicHolidays extends Component {
     return (
       <ul>
         {searchResultsByLocalName.map(each => (
-          <PublicHolidaysItem key={each.id} PublicHolidaysDetails={each} />
+          <PublicHolidaysItem
+            key={each.id}
+            PublicHolidaysDetails={each}
+            toggleIsChecked={this.toggleIsChecked}
+          />
         ))}
       </ul>
     )
@@ -111,7 +144,7 @@ class PublicHolidays extends Component {
   }
 
   render() {
-    const {searchInput} = this.state
+    const {searchInput, globalType} = this.state
     return (
       <div>
         <div className="search-container">
@@ -125,9 +158,15 @@ class PublicHolidays extends Component {
         </div>
 
         <div>
-          <input type="checkbox" id="global" />
+          <input
+            type="checkbox"
+            id="global"
+            value={globalType}
+            onChange={this.onChangeGlobal}
+          />
           <label htmlFor="global">Global</label>
-          <input type="checkbox" id="fixed" />
+
+          <input type="checkbox" id="fixed" onChange={this.onChangeFixed} />
           <label htmlFor="fixed">Fixed</label>
         </div>
 
