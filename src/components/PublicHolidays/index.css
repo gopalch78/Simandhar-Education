@@ -1,7 +1,12 @@
+.app-container {
+  background-image: linear-gradient(to bottom, lightblue, white);
+  height: 100%;
+}
+
 .search-container {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
+  margin-top: 40px;
 }
 
 .search-bar {
@@ -9,6 +14,9 @@
   width: 250px;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid gold;
+  background-color: wheat;
+  color: dimgrey;
 }
 
 .global-fixed-container {
@@ -25,13 +33,46 @@
 .list-of-items {
   list-style-type: none;
   display: flex;
+  text-align: center;
   flex-direction: row;
-  align-items: center;
-  margin-top: 50px;
+  margin-top: 40px;
   justify-content: space-evenly;
+  height: 60px;
+  width: 100%;
+  background-color: lightgreen;
 }
-.paragraph {
+.paragraph-1 {
   margin-top: 15px;
   height: 40px;
+  width: 100px;
+  margin-left: 80px;
   text-align: center;
+  color: red;
+}
+.paragraph {
+  color: red;
+}
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+.heading {
+  text-align: center;
+  color: rgb(221, 13, 228);
+  font-weight: bold;
+}
+.global {
+  color: red;
+  font-weight: bold;
+}
+.fixed {
+  color: blue;
+  font-weight: bold;
+}
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

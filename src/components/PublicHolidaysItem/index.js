@@ -5,7 +5,7 @@ const PublicHolidaysItem = props => {
   const {PublicHolidaysDetails, toggleIsChecked, isChecked} = props
   const {date, fixed, global, localName, name, type} = PublicHolidaysDetails
   const checkedClassName = isChecked
-    ? 'checkbox-element active'
+    ? 'checkbox-element-active'
     : 'checkbox-element'
 
   const onClickChecked = () => {
