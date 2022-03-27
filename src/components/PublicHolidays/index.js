@@ -18,7 +18,6 @@ class PublicHolidays extends Component {
     holidaysData: [],
     apiStatus: apiStatusConstants.initial,
     searchInput: '',
-    monthInput: '',
   }
 
   componentDidMount() {
@@ -61,48 +60,40 @@ class PublicHolidays extends Component {
     this.setState({searchInput: event.target.value})
   }
 
-  onChangeMonthInput = event => {
-    const {holidaysData} = this.state
-    const month = holidaysData.map(each => each.date)
-    console.log(month.length)
-    const getMonths = []
-    month.forEach(element => {
-      getMonths.push(element.slice(5, 7))
-    })
-    console.log(getMonths)
+  //    onChangeMonthInput = event => {
+  //     const {holidaysData} = this.state
+  //     const month = holidaysData.map(each => each.date)
+  //     const getMonths = []
+  //     month.forEach(element => {
+  //       getMonths.push(element.slice(5, 7))
+  //     })
 
-    this.setState({monthInput: event.target.value})
-  }
+  //     this.setState({monthInput: event.target.value})
+  //   }
 
   onChangeGlobal = event => {
     const {holidaysData} = this.state
-    const {checked} = event.target
-    const updatedHolidays = holidaysData.filter(each => each.global === 'true')
-    if (checked) {
+
+    if (event.target.checked) {
+      const updatedHolidays = holidaysData.filter(
+        each => each.global === 'true',
+      )
+
       this.setState({holidaysData: updatedHolidays})
+    } else {
+      this.getPublicHolidaysData()
     }
-    return {holidaysData}
   }
 
   onChangeFixed = event => {
     const {holidaysData} = this.state
-    const {checked} = event.target
-    const updatedHolidays = holidaysData.filter(each => each.fixed === 'true')
-    if (checked) {
-      return this.setState({holidaysData: updatedHolidays})
-    }
-    return holidaysData
-  }
 
-  toggleIsChecked = global => {
-    this.setState(prevState => ({
-      holidaysData: prevState.holidaysData.map(each => {
-        if (global === each.global) {
-          return {...each, isChecked: !each.isChecked}
-        }
-        return each
-      }),
-    }))
+    if (event.target.checked) {
+      const updatedHolidays = holidaysData.filter(each => each.fixed === 'true')
+      this.setState({holidaysData: updatedHolidays})
+    } else {
+      this.getPublicHolidaysData()
+    }
   }
 
   renderHolidays = () => {
@@ -111,18 +102,12 @@ class PublicHolidays extends Component {
     const searchResultsByLocalName = holidaysData.filter(
       each =>
         each.localName.toLowerCase().includes(searchInput.toLowerCase()) ||
-        each.date.toLowerCase().includes(searchInput.toLowerCase()) ||
-        each.fixed.toLowerCase().includes(searchInput.toLowerCase()) ||
-        each.global.toLowerCase().includes(searchInput.toLowerCase()),
+        each.date.slice(5, 7).toLowerCase().includes(searchInput.toLowerCase()),
     )
     return (
       <ul className="ul-container">
         {searchResultsByLocalName.map(each => (
-          <PublicHolidaysItem
-            key={each.id}
-            PublicHolidaysDetails={each}
-            toggleIsChecked={this.toggleIsChecked}
-          />
+          <PublicHolidaysItem key={each.id} PublicHolidaysDetails={each} />
         ))}
       </ul>
     )
@@ -161,7 +146,7 @@ class PublicHolidays extends Component {
   }
 
   render() {
-    const {searchInput, monthInput} = this.state
+    const {searchInput} = this.state
 
     return (
       <div className="app-container">
@@ -169,7 +154,7 @@ class PublicHolidays extends Component {
         <div className="search-container">
           <input
             type="search"
-            placeholder="Local Name"
+            placeholder="Local Name ,Month"
             className="search-bar"
             value={searchInput}
             onChange={this.onChangeSearchInput}
@@ -177,7 +162,7 @@ class PublicHolidays extends Component {
         </div>
 
         <div className="input-container">
-          <input type="checkbox" id="global" onChange={this.onChangeGlobal} />
+          <input type="checkbox" id="global" onClick={this.onChangeGlobal} />
           <label htmlFor="global" className="global">
             Global
           </label>
@@ -186,17 +171,10 @@ class PublicHolidays extends Component {
           <label htmlFor="fixed" className="fixed">
             Fixed
           </label>
-          <input
-            type="search"
-            id="month"
-            value={monthInput}
-            onChange={this.onChangeMonthInput}
-          />
-          <label htmlFor="month">Month</label>
         </div>
 
         <li className="list-of-items">
-          <p className="paragraph-1"> date</p>
+          <p className="paragraph"> date</p>
 
           <p className="paragraph">fixed</p>
 

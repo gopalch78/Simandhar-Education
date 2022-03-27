@@ -36,12 +36,11 @@
   text-align: center;
   flex-direction: row;
   margin-top: 40px;
-  justify-content: space-evenly;
+  margin-left: 50px;
   height: 60px;
-  width: 100%;
   background-color: lightgreen;
 }
-.paragraph-1 {
+.paragraph {
   margin-top: 15px;
   height: 40px;
   width: 100px;
